@@ -1,4 +1,5 @@
 <?php
+  error_reporting(0);
   require_once 'configuration.php';
   require_once('functions.php');
   if(!empty($_POST)){
@@ -185,7 +186,7 @@
                 </div>
               </div>
               <div class="form-group text-center">
-                <button data-loading-text="Saving Invoice..." type="submit" name="invoice_btn" class="btn btn-outline-default submit_btn invoice-save-bottom"><i class="fa fa-floppy-o"></i> Submit</button>
+                <button data-loading-text="Saving Invoice..." type="submit" id="invoice_btn" class="btn btn-outline-default submit_btn invoice-save-bottom"><i class="fa fa-floppy-o"></i> Submit</button>
                 <button type="button" class="btn btn-outline-warning">Reset</button>
               </div>
             </div>
