@@ -1,0 +1,8 @@
+/assets/vendor
+/node_modules
+/storage/*.key
+/vendor
+npm-debug.log
+yarn-error.log
+.env
+.phpunit.result.cache
