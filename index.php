@@ -1,4 +1,19 @@
-<?php require_once 'configuration.php'; ?>
+<?php
+  require_once 'configuration.php';
+  require_once('functions.php');
+  if(!empty($_POST)){
+    try {
+      $data = saveInvoice($_POST);
+      if(isset($data['success']) && $data['success']){
+        $_SESSION['success'] = 'Invoice Saved Successfully';
+        header('Location: list-invoices.php');
+        exit;
+      }
+    } catch (Exception $e) {
+      $_SESSION['error'] = $e->getMessage();
+    }
+  }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +34,7 @@
   <header class="header-global">
     <nav class="navbar navbar-horizontal navbar-expand-lg navbar-dark bg-default">
       <div class="container">
-          <a class="navbar-brand" href="#">Test</a>
+          <a class="navbar-brand" href="#">Invoice App</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
           </button>
@@ -42,18 +57,18 @@
 
               <ul class="navbar-nav ml-lg-auto">
                   <li class="nav-item">
-                      <a class="nav-link nav-link-icon" href="#">
-                          <i class="ni ni-favourite-28"></i>
-                          <span class="nav-link-inner--text d-lg-none">Discover</span>
+                      <a class="nav-link nav-link-icon" href="list-invoices.php">
+                          <i class="ni ni-bullet-list-67"></i>
+                          <span class="nav-link-inner--text d-lg-none">Invoice List</span>
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link nav-link-icon" href="#">
-                          <i class="ni ni-notification-70"></i>
-                          <span class="nav-link-inner--text d-lg-none">Profile</span>
+                      <a class="nav-link nav-link-icon" href="index.php">
+                          <i class="ni ni-fat-add"></i>
+                          <span class="nav-link-inner--text d-lg-none">Create Invoice</span>
                       </a>
                   </li>
-                  <li class="nav-item dropdown">
+                  <!-- <li class="nav-item dropdown">
                       <a class="nav-link nav-link-icon" href="#" id="navbar-default_dropdown_1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="ni ni-settings-gear-65"></i>
                           <span class="nav-link-inner--text d-lg-none">Settings</span>
@@ -64,7 +79,7 @@
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="#">Something else here</a>
                       </div>
-                  </li>
+                  </li> -->
               </ul>
 
           </div>
@@ -75,7 +90,8 @@
   <main class="profile-page">
     <section class="section">
       <div class="container">
-        <form>
+        <?php include_once('messages.php'); ?>
+        <form class="form-horizontal invoice-form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" id="invoice-form" role="form" novalidate>
           <div class="row">
             <div class="table-responsive">
               <table class="table align-items-center" id="invoiceTable">
@@ -168,6 +184,10 @@
                   <input type="number" class="form-control amountDue" name="amount_due" id="amountDue" placeholder="Amount Due" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;">
                 </div>
               </div>
+              <div class="form-group text-center">
+                <button data-loading-text="Saving Invoice..." type="submit" name="invoice_btn" class="btn btn-outline-default submit_btn invoice-save-bottom"><i class="fa fa-floppy-o"></i> Submit</button>
+                <button type="button" class="btn btn-outline-warning">Reset</button>
+              </div>
             </div>
           </div>
         </form>
@@ -180,20 +200,14 @@
       <div class="row align-items-center justify-content-md-between">
         <div class="col-md-6">
           <div class="copyright">
-            &copy; 2018
-            <a href="#" target="_blank">Test</a>
+            &copy; <?php echo date('Y') ?>
+            <a href="#" target="_blank">Invoice App</a>
           </div>
         </div>
         <div class="col-md-6">
           <ul class="nav nav-footer justify-content-end">
             <li class="nav-item">
-              <a href="#" class="nav-link" target="_blank">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link" target="_blank">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link" target="_blank">MIT License</a>
+              <a href="https://n-labs.blogspot.com" class="nav-link" target="_blank">More News</a>
             </li>
           </ul>
         </div>
